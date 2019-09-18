@@ -1,0 +1,109 @@
+<table class="table">
+        <thead>
+            <tr>
+                <th>Listado de Clientes</th>
+                <th></th>
+                <th></th>
+                <th>
+                    <button type="button" class="btn btn-success" (click)="open(content)">
+                        +
+                        <span>Agregar</span>
+                    </button>
+                </th>
+            </tr>
+        </thead>
+</table>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Primer Nombre</th>
+      <th scope="col">Segundo Nombre</th>
+      <th scope="col">Primer Apellido</th>
+      <th scope="col">Segundo Apellido</th>
+      <th scope="col">Email</th>
+      <th scope="col">Telefono</th>
+      <th scope="col">Activo</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cliente of data">
+      <td scope="row">{{cliente.id}}</td>
+      <td scope="col">{{cliente.primer_nombre}}</td>
+      <td scope="col">{{cliente.segundo_nombre}} </td>
+      <td scope="col">{{cliente.primer_apellido}} </td>
+      <td scope="col">{{cliente.segundo_apellido}} </td>
+      <td scope="col">{{cliente.email}}</td>
+      <td scope="col">{{cliente.telefono}}</td>
+      <td scope="col">{{cliente.activo }}</td>
+      <td scope="col">
+        <button (click)="editCiente(cliente,content)">
+          <fa-icon [icon]="faEdit"></fa-icon>
+        </button>
+        <button>
+            <fa-icon [icon]="faTrash"></fa-icon>        
+          </button>
+        </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Agregar Cliente</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="primer_nombre">Primer Nombre</label>
+        <div class="input-group">
+          <input id="primer_nombre" class="form-control" type="text" name="primer_nombre" [(ngModel)]="cliente.primer_nombre">
+        </div>
+      </div>
+
+      <div class="form-group">
+          <label for="segundo_nombre">Segundo Nombre</label>
+          <div class="input-group">
+            <input id="segundo_nombre" class="form-control" type="text" name="segundo_nombre" [(ngModel)]="cliente.segundo_nombre">
+          </div>
+      </div>
+  
+      <div class="form-group">
+          <label for="primer_apellido">Primer Apellido</label>
+          <div class="input-group">
+            <input id="primer_apellido" class="form-control" type="text" name="primer_apellido" [(ngModel)]="cliente.primer_apellido">
+          </div>
+      </div>
+  
+      <div class="form-group">
+          <label for="segundo_apellido">Segundo Apellido</label>
+          <div class="input-group">
+            <input id="segundo_apellido" class="form-control" type="text" name="segundo_apellido" [(ngModel)]="cliente.segundo_apellido">
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-group">
+            <input id="email" class="form-control" type="text" name="email" [(ngModel)]="cliente.email">
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="telefono">Telefono</label>
+          <div class="input-group">
+            <input id="telefono" class="form-control" type="text" name="telefono" [(ngModel)]="cliente.telefono">
+          </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Guardar</button>
+  </div>
+</ng-template>
