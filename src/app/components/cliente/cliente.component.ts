@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { ClienteService } from "../../services/cliente/cliente.service";
 
 interface Data  {
   id: Number;
@@ -39,45 +40,25 @@ export class ClienteComponent implements OnInit {
     telefono : null
   }
 
-  constructor(private modalService: NgbModal) { }
+  constructor(
+    private modalService: NgbModal,
+    private clienteService: ClienteService) { }
 
 
 
   ngOnInit() {
-    this.data = [{
-      id : 1,
-      primer_nombre : "juan",
-      primer_apellido: "omar",
-      segundo_nombre : "perez",
-      segundo_apellido : "guerra",
-      activo : true,
-      email : "agallo",
-      telefono : "21"       
-    },
-    {
-      id : 1,
-      primer_nombre : "allan",
-      primer_apellido: "omar",
-      segundo_nombre : "gallo",
-      segundo_apellido : "guerra",
-      activo : true,
-      email : "agallo",
-      telefono : "21"       
-    },
-    {
-      id : 1,
-      primer_nombre : "allan",
-      primer_apellido: "omar",
-      segundo_nombre : "gallo",
-      segundo_apellido : "guerra",
-      activo : true,
-      email : "agallo",
-      telefono : "21"       
-    }]
+    this.getClientes();
+  }
+
+  getClientes(): void {
+    this.clienteService.getAll()
+      .subscribe(clientes => {
+        console.log(clientes);
+        this.data = clientes
+      });
   }
 
   open(content) {
-    console.log(content);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {

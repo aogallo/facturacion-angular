@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { ProductoService } from "../../services/producto/producto.service";
+import { Producto } from '../../models/producto';
 
 interface Data  {
-  id: number;
-  nombre : string;
-  cantidad: number;
-  precio : number;
-  activo : boolean;
+    id: Number;
+    nombre : string;
+    cantidad: number;
+    precio : number;
+    activo : boolean;
 }
 
 
@@ -33,23 +35,17 @@ export class ProductoComponent implements OnInit {
     activo : null
   }
 
-  constructor(private modalService: NgbModal) { }
+  constructor(
+    private modalService: NgbModal,
+    private productoService: ProductoService) { }
 
   ngOnInit() {
-    this.data = [{
-      id: 1,
-      nombre : 'uva',
-      cantidad: 125,
-      precio : 3.21,
-      activo : true      
-    },
-    {
-      id: 2,
-      nombre : 'mesa',
-      cantidad: 10,
-      precio : 347.14,
-      activo : true      
-    }]    
+    this.getProductos();
+  }
+
+  getProductos(): void {
+    this.productoService.getAll()
+      .subscribe(productos => this.data = productos);
   }
 
   open(content) {
@@ -75,6 +71,21 @@ export class ProductoComponent implements OnInit {
     this.open(content);
     this.producto = _producto;
     console.log(_producto);
-  }  
+  }
+
+  save(_producto: Producto){
+    //if (_producto) {return;}
+    if (_producto.id !=null){
+      this.productoService.update(_producto)
+        .subscribe();
+    }else{
+
+      console.log(_producto);
+      _producto.activo = true;
+       _producto.id = 0;
+      this.productoService.add(_producto)
+      .subscribe(producto => this.data.push(producto));
+    }
+  }
 
 }
