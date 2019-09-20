@@ -3,6 +3,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ProductoService } from "../../services/producto/producto.service";
 import { Producto } from '../../models/producto';
+import { Router } from '@angular/router';
 
 interface Data  {
     id: Number;
@@ -37,7 +38,8 @@ export class ProductoComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private productoService: ProductoService) { }
+    private productoService: ProductoService,
+    private route: Router) { }
 
   ngOnInit() {
     this.getProductos();
@@ -86,6 +88,10 @@ export class ProductoComponent implements OnInit {
       this.productoService.add(_producto)
       .subscribe(producto => this.data.push(producto));
     }
+  }
+
+  createProducto(){
+    this.route.navigate(['producto/create']);
   }
 
 }

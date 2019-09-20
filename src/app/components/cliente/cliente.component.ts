@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ClienteService } from "../../services/cliente/cliente.service";
+import { Router } from '@angular/router';
 
 interface Data  {
   id: Number;
@@ -41,8 +42,8 @@ export class ClienteComponent implements OnInit {
   }
 
   constructor(
-    private modalService: NgbModal,
-    private clienteService: ClienteService) { }
+    private clienteService: ClienteService,
+    private router: Router) { }
 
 
 
@@ -58,14 +59,6 @@ export class ClienteComponent implements OnInit {
       });
   }
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -76,10 +69,18 @@ export class ClienteComponent implements OnInit {
     }
   }
 
-  editCiente(_cliente : Data, content: any){
-    this.open(content);
-    this.cliente = _cliente;
-    console.log(_cliente);
+  clienteDetails(){
+    this.router.navigate(['cliente/create']);
   }
 
+  navegar(action: string,id:number){
+    switch (action){
+      case 'create':
+        break;
+      case 'edit':
+          this.router.navigate(['cliente/edit',id])
+        break;
+    }
+
+  }
 }

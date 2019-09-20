@@ -7,11 +7,20 @@
                 <input type="text" class="form-control" id="staticEmail" placeholder="Numero de factura" >
                 </div>
             </div>
-            <div class="form-group row">
+            <!-- <div class="form-group row">
                 <label for="inputPassword" class="col-sm-2 col-form-label">Cliente</label>
                 <div class="col-sm-10">
                 <input type="password" class="form-control" id="inputPassword" placeholder="Cliente">
                 </div>
+            </div> -->
+            <div class="form-group row">
+              <label for="cliente" class="col-sm-2 col-form-label">Cliente</label>
+              <div class="col-sm-10">
+                <select id="cliente" class="form-control" >
+                  <option selected>Seleccionar...</option>
+                  <option value="{{cliente.id}}" *ngFor="let cliente of clientes">{{cliente.primer_nombre}}</option>
+                </select>                
+              </div>
             </div>
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Fecha</label>
@@ -24,6 +33,7 @@
             
 </div>
 
+<div></div>
 <table class="table">
         <thead>
             <tr>
@@ -70,40 +80,38 @@
   </tbody>
 </table>
 
-
-<ng-template #content let-modal>
-        <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Agregar Producto</h4>
-          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="primer_nombre">Producto</label>
-              <div class="input-group">
+<div>
+    <h3>Agregar Producto</h3>
+    <div [hidden]="submitted" style="width: 400px;">
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="primer_nombre">Nombre</label>
+            <div class="input-group">
                 <input id="primer_nombre" class="form-control" type="text" name="nombre" [(ngModel)]="producto.nombre">
-              </div>
             </div>
-      
+            </div>
+    
             <div class="form-group">
-                <label for="segundo_nombre">Cantidad</label>
+                <label for="segundo_nombre">Inventario</label>
                 <div class="input-group">
-                  <input id="segundo_nombre" class="form-control" type="text" name="cantidad" [(ngModel)]="producto.cantidad">
+                <input id="segundo_nombre" class="form-control" type="text" name="cantidad" [(ngModel)]="producto.cantidad">
                 </div>
             </div>
         
             <div class="form-group">
                 <label for="primer_apellido">Precio</label>
                 <div class="input-group">
-                  <input id="primer_apellido" readonly class="form-control-plaintext" type="text" name="precio" [(ngModel)]="producto.precio">
+                <input id="primer_apellido" class="form-control" type="text" name="precio" [(ngModel)]="producto.precio">
                 </div>
-            </div>
-          </form>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Guardar</button>
-        </div>
-      </ng-template>
-      
+    
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" (click)="gotoList()" class="btn btn-danger">Cancelar</button>
+      </form>
+    </div>
+    
+    <div [hidden]="!submitted">
+      <h4>You submitted successfully!</h4>
+      <!-- <button class="btn btn-success" (click)="newEmployee()">Add</button> -->
+    </div>  
+</div>

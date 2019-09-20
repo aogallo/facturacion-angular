@@ -5,7 +5,9 @@
                 <th></th>
                 <th></th>
                 <th>
-                    <button type="button" class="btn btn-success" (click)="open(content)">
+                    <button type="button" class="btn btn-success" 
+                      (click)="clienteDetails()"
+                      >
                         +
                         <span>Agregar</span>
                     </button>
@@ -23,7 +25,7 @@
       <th scope="col">Segundo Apellido</th>
       <th scope="col">Email</th>
       <th scope="col">Telefono</th>
-      <th scope="col">Activo</th>
+      <!-- <th scope="col">Activo</th> -->
       <th scope="col">Acciones</th>
     </tr>
   </thead>
@@ -36,9 +38,9 @@
       <td scope="col">{{cliente.segundo_apellido}} </td>
       <td scope="col">{{cliente.email}}</td>
       <td scope="col">{{cliente.telefono}}</td>
-      <td scope="col">{{cliente.activo }}</td>
+      <!-- <td scope="col">{{cliente.activo }}</td> -->
       <td scope="col">
-        <button (click)="editCiente(cliente,content)">
+        <button (click)="navegar('edit',cliente.id)">
           <fa-icon [icon]="faEdit"></fa-icon>
         </button>
         <button (click)="open('focusFirst')" >

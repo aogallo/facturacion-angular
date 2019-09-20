@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Cliente } from "../../models/cliente";
+import { ClienteService } from 'src/app/services/cliente/cliente.service';
+import { FacturaService } from 'src/app/services/factura/factura.service';
+import { Router } from '@angular/router';
+import { Producto } from "../../models/producto";
+import { ProductoService } from 'src/app/services/producto/producto.service';
+
 
 interface Data  {
   id: number;
@@ -20,46 +27,26 @@ export class FacturaCreateEditComponent implements OnInit {
   faPlus = faPlus;
   faTrash = faTrash;
   faEdit = faEdit;
-
+  cliente: Cliente;
+  clientes: Cliente [] = [];
   data: Data [] = [];
-  
-  producto: Data = {
-    id: null,
-    nombre : null,
-    cantidad: null,
-    precio : null,
-    activo : null
-  }
+  productos: Producto [] = [];
 
-  constructor(private modalService: NgbModal) { }
+
+  constructor(
+    private clienteService: ClienteService,
+    private facturaService: FacturaService,
+    private route: Router,
+    private productoService: ProductoService
+  ) { }
 
   ngOnInit() {
+    this.getClientes();
   }
 
-
-  open(content) {
-    console.log(content);
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  getClientes(){
+    this.clienteService.getAll()
+      .subscribe(clientes => this.clientes = clientes,error => console.error(error));
   }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
-
-  edit(_producto : Data, content: any){
-    this.open(content);
-    this.producto = _producto;
-    console.log(_producto);
-  }  
 
 }

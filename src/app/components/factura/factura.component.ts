@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Router } from "@angular/router";
+import { Route } from '@angular/compiler/src/core';
 
 interface Data  {
   id: number;
@@ -36,7 +38,8 @@ export class FacturaComponent implements OnInit {
     total : null
   }
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal,
+      private router : Router) { }
 
   ngOnInit() {
     this.data = [{
@@ -68,33 +71,7 @@ export class FacturaComponent implements OnInit {
     }]
   }
 
-  open(content) {
-    console.log(content);
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
-
-  edit(_factura : Data, content: any){
-    this.open(content);
-    this.factura = _factura;
-    console.log(_factura);
-  }
-
-  save(_factura){
-    this.bandGuardo = !this.bandGuardo;
-    this.getDismissReason('ESC');
+  crear(){
+    this.router.navigate(['factura/crear'])
   }
 }

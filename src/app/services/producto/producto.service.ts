@@ -40,6 +40,14 @@ export class ProductoService {
           catchError(this.handleError<Producto[]>('getProducto',[]))
         );
     }
+
+    getById(id: number): Observable<Producto>{
+      return this.http.get<Producto>(this.url + `/${id}`)
+        .pipe(
+          tap(_ => this.log('fetch producto')),
+          catchError(this.handleError<Producto>('getProducto',[]))
+        );
+    }
   
     add(cliente: Producto): Observable<Producto> {
       return this.http.post<Producto>(this.url,cliente,this.httpOptions)

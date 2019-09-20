@@ -22,7 +22,7 @@ export class ClienteService {
     private messageService: MessageService) { }
 
   private log(message: string){
-    this.messageService.add(`HeroService: ${message}`)
+    this.messageService.add(`ClienteService: ${message}`)
   }
 
   private handleError<T> (operation = 'operation', result?: T){
@@ -38,6 +38,14 @@ export class ClienteService {
       .pipe(
         tap(_ => this.log('fetch cliente')),
         catchError(this.handleError<Cliente[]>('getCliente',[]))
+      );
+  }
+
+  getById(id: number): Observable<Cliente> {
+    return this.http.get<Cliente>(this.clienteUrl + `/${id}`)
+      .pipe(
+        tap(_ => this.log('fectch cliente')),
+        catchError(this.handleError<Cliente>('getCliente',[]))
       );
   }
 
