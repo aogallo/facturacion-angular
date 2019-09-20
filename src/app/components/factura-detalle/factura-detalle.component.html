@@ -1,82 +1,124 @@
-<table class="table">
-        <thead>
-            <tr>
-                <th>Detalle de la factura</th>
-                <th></th>
-                <th></th>
-                <th>
-                    <button type="button" class="btn btn-success" (click)="open(content)">
-                        +
-                        <span>Agregar producto</span>
-                    </button>
-                </th>
-            </tr>
-        </thead>
-</table>
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Cantidad</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Total</th>
-      <th scope="col">Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let producto of data">
-      <td scope="row">{{producto.id}}</td>
-      <td scope="col">{{producto.nombre}}</td>
-      <td scope="col">{{producto.cantidad}} </td>
-      <td scope="col">{{producto.precio | currency}}  </td>
-      <td scope="col">{{producto.activo }}</td>
-      <td scope="col">
-        <button (click)="edit(producto,content)">
-            <fa-icon [icon]="faEdit"></fa-icon>
-        </button>
-        <button>
-            <fa-icon [icon]="faTrash"></fa-icon>        
-          </button>
-        </td>
-    </tr>
-  </tbody>
-</table>
 
-
-
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Agregar Producto</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form>
-      <div class="form-group">
-        <label for="primer_nombre">Nombre</label>
-        <div class="input-group">
-          <input id="primer_nombre" class="form-control" type="text" name="nombre" [(ngModel)]="producto.nombre">
+<div class="container">
+    <form (ngSubmit)="onSubmit()">
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Numero de factura</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" readonly required id="staticEmail" placeholder="Numero de factura" name="numero_factura" [(ngModel)]="data.numero_factura">
+            </div>
         </div>
-      </div>
-
-      <div class="form-group">
-          <label for="segundo_nombre">Inventario</label>
-          <div class="input-group">
-            <input id="segundo_nombre" class="form-control" type="text" name="cantidad" [(ngModel)]="producto.cantidad">
+        <!-- <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Cliente</label>
+            <div class="col-sm-10">
+            <input type="password" class="form-control" id="inputPassword" placeholder="Cliente">
+            </div>
+        </div> -->
+        <div class="form-group row">
+          <label for="cliente" class="col-sm-2 col-form-label" required>Cliente</label>
+          <div class="col-sm-10">
+            <label for=""name="nombre_cliente" class="col-sm-2 col-form-label">{{cliente.primer_nombre}}  {{ cliente. primer_apellido}}</label>              
           </div>
-      </div>
-  
-      <div class="form-group">
-          <label for="primer_apellido">Precio</label>
-          <div class="input-group">
-            <input id="primer_apellido" class="form-control" type="text" name="precio" [(ngModel)]="producto.precio">
-          </div>
-      </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" required class="col-sm-2 col-form-label">Fecha</label>
+            <div class="col-sm-10">
+              <label class="col-sm-2 col-form-label" name="fecha_factura" [(ngModel)]="data.fecha_factura">{{data.fecha_factura}}</label>
+            </div>    
+        </div>
+        <!-- <button type="button" (click)="prueba()" class="btn btn-success">Guardar</button> -->
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" (click)="cancelarFactura()" class="btn btn-danger">Cancelar detalle</button>
+        <button type="button" (click)="isAdd = !isAdd" class="btn btn-info">Agregar producto</button>
+        <div class="alert alert-warning" role="alert">
+            Total de factura: {{totalFactura | currency}}
+        </div>
     </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Guardar</button>
-  </div>
-</ng-template>
+        
+</div>
+
+<hr *ngIf="isAdd"/>
+
+<div *ngIf="!isAdd">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Listado de productos</th>
+        </tr>
+    </thead>
+</table>
+<table class="table">
+<thead class="thead-dark">
+<tr>
+  <th scope="col">#</th>
+  <th scope="col">Producto</th>
+  <th scope="col">Cantidad</th>
+  <th scope="col">Precio unitario</th>
+  <th scope="col">Total</th>
+  <th scope="col">Acciones</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let prod of productoPedido; let i = index">
+  <td scope="row">{{i + 1}}</td>
+  <td scope="col">{{prod.nombre}}</td>
+  <td scope="col">{{prod.cantidad}}</td>
+  <td scope="col">{{prod.precio}} </td>
+  <td scope="col">{{prod.cantidad * prod.precio | currency}} </td>
+  <td scope="col">
+    <button (click)="updateProductoArrary(prod)" ngbTooltip="Editar">
+      <fa-icon [icon]="faEdit"></fa-icon>
+    </button>
+    <button (click)="deleteProductoArray(i)">
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
+    </td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+<div *ngIf="isAdd">
+<h4>Agregar Producto</h4>
+<form>
+    <div class="form-group row">
+      <label for="productoList" class="col-sm-2 col-form-label col-form-label-sm">Producto</label>
+      <div class="col-sm-10">
+        <select (change)="changeSelectProducto($event.target.value)" class="form-control form-control-sm" id="productoList" name="selectProducto" [(ngModel)]="producto.id">
+          <option value="0">Seleccione...</option>
+          <option *ngFor="let producto of productos" value="{{producto.id}}" >{{producto.nombre}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="cantidad" class="col-sm-2 col-form-label col-form-label-sm">Cantidad</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control form-control-sm" id="cantidad" name="cantidad" placeholder="Cantidad" [(ngModel)]="producto.cantidad">
+      </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="precio" class="col-sm-2 col-form-label col-form-label-sm">Precio unitario</label>
+        <div class="col-sm-10">
+          <input type="text" readonly class="form-control form-control-sm" id="precio" name="precio" placeholder="" [(ngModel)]="producto.precio">
+        </div>
+    </div>
+    <div class="form-group ">
+      <label for="total" name="total" class="col-form-label">Total:{{producto.cantidad * producto.precio | currency}}</label>
+    </div>
+      
+    <!-- <div class="form-group"> -->
+        <div class="form-group alert alert-danger" role="alert" [hidden]="!hideAlert">
+            {{mensaje}}
+        </div>     
+    <!-- </div> -->
+
+    <button type="button" (click)="agregarProducto(producto)"class="btn btn-success">Guardar</button>
+    <button type="button" (click)="cancelarProducto()" class="btn btn-danger">Cancelar</button>
+  </form>  
+<div [hidden]="!submitted">
+  <h4>You submitted successfully!</h4>
+  <!-- <button class="btn btn-success" (click)="newEmployee()">Add</button> -->
+</div>
+</div>

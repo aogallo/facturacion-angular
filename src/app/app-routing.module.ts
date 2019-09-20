@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'cliente/create', component: ClienteCreateComponent },
   { path: 'cliente/edit/:id', component: ClienteEditComponent },
   { path: 'factura', component: FacturaComponent },
-  { path: 'factura/factura_detalle', component: FacturaDetalleComponent },
+  { path: 'factura/factura_detalle/:id/:total', component: FacturaDetalleComponent },
   { path: 'factura/crear', component: FacturaCreateEditComponent },
   { path: 'producto', component: ProductoComponent },
   { path: 'producto/create', component: ProductoCreateComponent },
